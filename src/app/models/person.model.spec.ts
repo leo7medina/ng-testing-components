@@ -1,7 +1,7 @@
 import { Person } from "./person.model"
 
 
-fdescribe('Test for Person', () => {
+describe('Test for Person', () => {
     let person: Person;
 
 
