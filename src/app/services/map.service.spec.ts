@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { MapsService } from './map.service';
 
-fdescribe('MapsService', () => {
+describe('MapsService', () => {
   let mapService: MapsService;
 
   beforeEach(() => {
