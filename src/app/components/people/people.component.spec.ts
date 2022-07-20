@@ -5,7 +5,7 @@ import { PersonComponent } from '../person/person.component';
 
 import { PeopleComponent } from './people.component';
 
-fdescribe('PeopleComponent', () => {
+describe('PeopleComponent', () => {
   let component: PeopleComponent;
   let fixture: ComponentFixture<PeopleComponent>;
 
@@ -55,5 +55,5 @@ fdescribe('PeopleComponent', () => {
     //
     expect(component.selectedPerson).toEqual(component.people[idx]);
   });
-  
+
 });
