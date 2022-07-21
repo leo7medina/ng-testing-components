@@ -5,6 +5,7 @@ import { ProductComponent } from '../product/product.component';
 import { ProductsComponent } from './products.component';
 import {of, defer} from 'rxjs';
 import { ValueService } from 'src/app/services/value.service';
+import { By } from '@angular/platform-browser';
 
 fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -87,6 +88,7 @@ fdescribe('ProductsComponent', () => {
     }));
 
     describe('Test for callPromise', () => {
+      
       it('should call to promise',async () => {
         //Arrange
         const mockMsg = 'my mock is string';
@@ -97,7 +99,23 @@ fdescribe('ProductsComponent', () => {
         //Assert
         expect(rta).toEqual(mockMsg);
         expect(valueService.getPromiseValue).toHaveBeenCalled()
-      })
+      });
+
+      it('should show "my mock string" in <p> when btn was clicked', fakeAsync(() => {
+        // Arrange
+        const mockMsg = 'my mock string';
+        valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+        const btnDe = fixture.debugElement.query(By.css('.btn-promise'));
+        // Act
+        btnDe.triggerEventHandler('click', null);
+        tick();
+        fixture.detectChanges();
+        const rtaDe = fixture.debugElement.query(By.css('p.rta'));
+        // Assert
+        expect(component.rta).toEqual(mockMsg);
+        expect(valueService.getPromiseValue).toHaveBeenCalled();
+        expect(rtaDe.nativeElement.textContent).toEqual(mockMsg);
+      }));
     })
 
   });

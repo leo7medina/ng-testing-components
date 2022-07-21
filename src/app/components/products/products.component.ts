@@ -14,6 +14,7 @@ export class ProductsComponent implements OnInit {
   limit = 10;
   offset = 0;
   status: 'loading' | 'success' | 'error' | 'init' = 'init';
+  rta = '';
   constructor(
     private productService: ProductService,
     private valueService: ValueService
@@ -42,6 +43,7 @@ export class ProductsComponent implements OnInit {
   }
 
  async callPromise() {
-  return await this.valueService.getPromiseValue();
+  this.rta = await this.valueService.getPromiseValue();
+  return this.rta;
  }
 }
