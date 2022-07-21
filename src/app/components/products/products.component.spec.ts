@@ -4,18 +4,23 @@ import { ProductService } from 'src/app/services/product.service';
 import { ProductComponent } from '../product/product.component';
 import { ProductsComponent } from './products.component';
 import {of, defer} from 'rxjs';
+import { ValueService } from 'src/app/services/value.service';
 
 fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let productService: jasmine.SpyObj<ProductService>;
+  let valueService: jasmine.SpyObj<ValueService>
 
   beforeEach(async () => {
     let productServiceSpy = jasmine.createSpyObj('ProductService', ['getAll']);
+    let valueServiceSpy = jasmine.createSpyObj('ValueService', ['getPromiseValue']);
+
     await TestBed.configureTestingModule({
       declarations: [ ProductsComponent, ProductComponent ],
       providers: [
-        {provide: ProductService, useValue: productServiceSpy}
+        {provide: ProductService, useValue: productServiceSpy},
+        {provide: ValueService, useValue: valueServiceSpy}
       ]
     })
     .compileComponents();
@@ -23,6 +28,7 @@ fdescribe('ProductsComponent', () => {
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductService) as jasmine.SpyObj<ProductService>;
+    valueService = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
 //    fixture.detectChanges();
     const productsMock = generateManyProducts(3);
     console.log(productsMock);
@@ -79,6 +85,20 @@ fdescribe('ProductsComponent', () => {
       // Assert
       expect(component.status).toEqual('error');
     }));
+
+    describe('Test for callPromise', () => {
+      it('should call to promise',async () => {
+        //Arrange
+        const mockMsg = 'my mock is string';
+        valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+        
+        const rta = await component.callPromise();
+        fixture.detectChanges();
+        //Assert
+        expect(rta).toEqual(mockMsg);
+        expect(valueService.getPromiseValue).toHaveBeenCalled()
+      })
+    })
 
   });
 });
